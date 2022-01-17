@@ -14,10 +14,7 @@ class ParticleController {
     // create particles
     createParticlesAndPutThemInArray();
     // apply particle properies
-    setXYForEachParticle("SPIRAL");
-    setSizeForEachParticle("RANDOM", 70);
-    setColorForEachParticle("RANDOM", 255, 255, 255);
-    setAlphaForEachParticle("RANDOM", 150);
+    applyParticleProperties();
   }
 
 
@@ -33,16 +30,14 @@ class ParticleController {
     }
   }
 
-  // X & Y for each particle
+  // X&Y for each particle
   void setXYForEachParticle(String strategy) {
     for (int i = 0; i < particleArray.length; i++) {
       switch(strategy) {
       case "RANDOM" :
-        // random placement
         particleArray[i].setXY((int)random(0, width), (int)random(0, height));
         break;
       case "SPIRAL" :
-        // spiral
         degree = map(i, 0, particleArray.length, degreeMin, degreeMax);
         rNew = map(i, 0, particleArray.length, rSpiralMax, rSpiralMin);
         particleArray[i].setXY(
@@ -59,16 +54,13 @@ class ParticleController {
     for (int i = 0; i < particleArray.length; i++) {
       switch(strategy) {
         case("UNIQUE") :
-        // unique size
         particleArray[i].setPSize(pSize);
         break;
         case("ASCENDING") :
-        // descending/ascending size
         nextSize = (int)map(i, 0, particleArray.length, 0, pSize);
         particleArray[i].setPSize(nextSize);
         break;
         case("DESCENDING") :
-        // descending/ascending size
         nextSize = (int)map(i, 0, particleArray.length, pSize, 0);
         particleArray[i].setPSize(nextSize);
         break;
@@ -91,6 +83,7 @@ class ParticleController {
       }
     }
   }
+
   // ALPHA for each particle
   void setAlphaForEachParticle(String strategy, int alpha) {
     for (int i = 0; i < particleArray.length; i++) {
@@ -100,6 +93,38 @@ class ParticleController {
         break;
         case("RANDOM") :
         particleArray[i].setAlphaRandom(alpha);
+        break;
+        case("NOFILL") :
+        particleArray[i].setAlpha(0);
+        break;
+      }
+    }
+  }
+
+  // STROKE for each particle
+  void setStrokeForEachParticle(String strategy) {
+    for (int i = 0; i < particleArray.length; i++) {
+      switch(strategy) {
+        case("NOSTROKE") :
+        particleArray[i].setStrokeAlpha(0);
+        break;
+        case("RANDOM") :
+        particleArray[i].setStrokeColorRandom();
+        particleArray[i].setStrokeAlpha(200);
+        break;
+        case("BACKGROUND") :
+        particleArray[i].setStrokeAlpha(200);
+        particleArray[i].setStrokeColor(bgColRed, bgColGreen, bgColBlue);
+        break;
+      }
+    }
+  }
+  void setStrokeForEachParticle(String strategy, int r, int g, int b) {
+    for (int i = 0; i < particleArray.length; i++) {
+      switch(strategy) {
+        case("UNIQUE") :
+        particleArray[i].setStrokeAlpha(200);
+        particleArray[i].setStrokeColor(r, g, b);
         break;
       }
     }
@@ -121,5 +146,13 @@ class ParticleController {
     this.rSpiralMax = (int)random(100, width);
     this.degreeMin = 0;
     this.degreeMax = (int)random(90, 2160);
+  }
+
+  void applyParticleProperties() {
+    setXYForEachParticle("SPIRAL");                    // X&Y:    "SPIRAL", "RANDOM"
+    setSizeForEachParticle("RANDOM", 70);              // SIZE:   "UNIQUE", "RANDOM", "DESCENDING", "ASCENDING"
+    setColorForEachParticle("RANDOM", 255, 255, 255);  // COLOR:  "UNIQUE", "RANDOM"
+    setAlphaForEachParticle("RANDOM", 150);            // ALPHA:  "UNIQUE", "RANDOM", "NOFILL"
+    setStrokeForEachParticle("NOSTROKE");              // STROKE: "UNIQUE", "RANDOM", "NOSTROKE", "BACKGROUND"
   }
 }

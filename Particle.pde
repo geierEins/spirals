@@ -1,8 +1,7 @@
 class Particle {
 
-  int x, y, pSize, alpha, strokeweight;
-  float pColRedMax, pColGreenMax, pColBlueMax, pColRed, pColGreen, pColBlue;
-  float omega, omegaStep;
+  int x, y, pSize;
+  int pColRedMax, pColGreenMax, pColBlueMax, pColRed, pColGreen, pColBlue, strokeColRed, strokeColGreen, strokeColBlue, alpha, strokeAlpha, strokeWeight;
 
   Particle(int x, int y, int pSize) {
     this(pSize);
@@ -16,23 +15,32 @@ class Particle {
   }
 
   Particle() {
+    applyDefaultColorProperties();
+  }
+
+  void applyDefaultColorProperties() {
     this.pColRedMax = 255;
     this.pColRed = pColRedMax;
     this.pColGreenMax = 255;
     this.pColGreen = pColGreenMax;
     this.pColBlueMax = 255;
     this.pColBlue = pColBlueMax;
-    this.strokeweight = 0;
+
+    this.strokeColRed = 255;
+    this.strokeColGreen = 255;
+    this.strokeColBlue = 255;
+
+    this.strokeAlpha = 0;
+    this.strokeWeight = 2;
     this.alpha = 100;
-    this.omega = random(0, 360);
-    this.omegaStep = random(0.5, 1.5);
   }
-  
+
   //////
 
   void drawParticle() {
     fill(pColRed, pColGreen, pColBlue, alpha);
-    noStroke();
+    stroke(strokeColRed, strokeColGreen, strokeColBlue, strokeAlpha);
+    strokeWeight(strokeWeight);
     ellipse(x, y, pSize, pSize);
   }
 
@@ -40,7 +48,7 @@ class Particle {
     this.x = x;
     this.y = y;
   }
-  
+
   //////
 
   void setPSize(int pSize) {
@@ -50,7 +58,7 @@ class Particle {
   void setPSizeRandom() {
     this.pSize = (int)random(5, 50);
   }
-  
+
   //////
 
   void setColor(int r, int g, int b) {
@@ -73,11 +81,27 @@ class Particle {
 
   //////
 
-  void setAlpha(int alpha){
+  void setAlpha(int alpha) {
     this.alpha = alpha;
   }
 
   void setAlphaRandom(int alphaMax) {
     this.alpha = (int)random(40, alphaMax);
+  }
+
+  void setStrokeAlpha(int strokeAlpha) {
+    this.strokeAlpha = strokeAlpha;
+  }
+
+  void setStrokeColorRandom() {
+    this.strokeColRed = (int)random(0, 255);
+    this.strokeColGreen = (int)random(0, 255);
+    this.strokeColBlue = (int)random(0, 255);
+  }
+
+  void setStrokeColor(int r, int g, int b) {
+    this.strokeColRed = r;
+    this.strokeColGreen = g;
+    this.strokeColBlue = b;
   }
 }
